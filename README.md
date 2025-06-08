@@ -59,12 +59,6 @@ wget -O local-linux.deb "https://cdn.localwp.com/stable/latest/deb"
 sudo dpkg -i local-linux.deb
 ```
 
-**Note for Ubuntu 24.04:** If you get dependency errors, install these packages first:
-```bash
-wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.22_amd64.deb
-sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2.22_amd64.deb
-```
-
 ### 5. Configure Router Mode
 In LocalWP Preferences, set Router Mode to "localhost".
 

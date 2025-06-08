@@ -45,6 +45,16 @@ EOF
 sudo pkill -HUP polkitd
 ```
 
+#### Testing Polkit Configuration
+After killing polkitd, you can test if the polkit configuration is working without requiring a password:
+
+```bash
+# Test if polkit allows actions without password prompts
+pkexec echo "Polkit configuration is working correctly"
+```
+
+If configured correctly, this should display the message without prompting for a password.
+
 ### 3. Restart Linux Environment
 Either restart your Chromebook or right-click the Linux icon in the shelf and choose "Shutdown Linux".
 

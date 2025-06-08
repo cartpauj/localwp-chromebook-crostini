@@ -14,8 +14,14 @@ whoami
 users
 ```
 
-### 2. Fix Polkit Authentication
-Replace `YOUR_USERNAME` with your actual username from step 1:
+### 2. Install Required Packages and Fix Polkit Authentication
+First, install the required packages:
+
+```bash
+sudo apt update && sudo apt install -y wget dpkg libaio1 libncurses5 libnss3-tools policykit-1 policykit-1-gnome libcap2-bin
+```
+
+Then fix Polkit authentication by replacing `YOUR_USERNAME` with your actual username from step 1:
 
 ```bash
 sudo tee /etc/polkit-1/rules.d/99-localwp-allow.rules > /dev/null << EOF
@@ -43,7 +49,21 @@ sudo pkill -HUP polkitd
 Either restart your Chromebook or right-click the Linux icon in the shelf and choose "Shutdown Linux".
 
 ### 4. Install LocalWP
-Download and install LocalWP after the restart.
+Download and install LocalWP after the restart:
+
+```bash
+# Step 1: Download LocalWP
+wget -O local-linux.deb "https://cdn.localwp.com/stable/latest/deb"
+
+# Step 2: Install LocalWP
+sudo dpkg -i local-linux.deb
+```
+
+**Note for Ubuntu 24.04:** If you get dependency errors, install these packages first:
+```bash
+wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.22_amd64.deb
+sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2.22_amd64.deb
+```
 
 ### 5. Configure Router Mode
 In LocalWP Preferences, set Router Mode to "localhost".

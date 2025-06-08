@@ -2,12 +2,13 @@
 
 ## ⚠️ Most Important: Installation Order
 
-**If you're experiencing multiple configuration issues (MySQL, PHP-FPM, Nginx), the root cause is likely that polkit authentication wasn't configured before installing LocalWP.**
+**If you're experiencing multiple configuration issues (MySQL, PHP-FPM, Nginx), the root cause is likely that polkit authentication wasn't configured before installing LocalWP, OR you didn't restart the Crostini container.**
 
 **Quick Fix:**
 1. **Uninstall LocalWP:** `sudo apt remove local -y && sudo rm -rf /opt/Local && rm -rf ~/.config/Local`
 2. **Follow the updated setup guide** which configures polkit FIRST
-3. **Reinstall with correct order** - this should prevent most issues
+3. **RESTART the Crostini container** after configuring polkit (essential!)
+4. **Reinstall with correct order** - this should prevent most issues
 
 ## Common Error Messages and Solutions
 
@@ -24,9 +25,11 @@ exitCode: 127
 
 **Solution:**
 1. Install polkit components: `sudo apt install -y policykit-1 policykit-1-gnome`
-2. Create polkit rules (see main guide Step 4)
-3. Reload polkit: `sudo pkill -HUP polkitd`
-4. Test: `pkexec echo "test"` (should work without password)
+2. Find your username: `echo $USER` or `whoami` 
+3. Create polkit rules with your actual username (see main guide Step 4)
+4. Reload polkit: `sudo pkill -HUP polkitd`
+5. Test: `pkexec echo "test"` (should work without password)
+6. **RESTART Crostini container** (critical!)
 
 ### 2. MySQL Connection Failures
 
@@ -130,6 +133,18 @@ Cannot register authentication agent!
 
 **Solution:**
 This is expected in Crostini. The polkit rules we create bypass this requirement.
+
+### 9. LocalWP Appears to Work But Sites Don't Create Properly
+
+**Symptoms:** LocalWP starts, but site creation stalls or fails silently.
+
+**Root Cause:** System state conflicts, even with correct polkit configuration.
+
+**Solution:**
+1. **Restart Crostini container** (most common fix)
+2. Verify polkit is working: `pkexec echo "test"`
+3. Check username in polkit rules matches: `echo $USER`
+4. If still failing, try complete reset (see Recovery Procedures)
 
 ## Debugging Commands
 
@@ -285,9 +300,11 @@ ps aux | grep local | awk '{print $6}' | head -1
 ## Getting Help
 
 1. **Check this troubleshooting guide first**
-2. **Run verification commands** to identify the specific issue
-3. **Collect logs** from terminal output when running LocalWP
-4. **Test individual components** (polkit, MySQL, nginx) separately
-5. **Try the complete reset** if all else fails
+2. **Try restarting the Crostini container** (fixes many issues)
+3. **Run verification commands** to identify the specific issue
+4. **Verify username in polkit rules** matches your actual username (`echo $USER`)
+5. **Collect logs** from terminal output when running LocalWP
+6. **Test individual components** (polkit, MySQL, nginx) separately
+7. **Try the complete reset** if all else fails
 
-Remember: Most issues in Crostini stem from privilege escalation problems or missing configuration files due to template processing failures.
+Remember: Most issues in Crostini stem from privilege escalation problems, incorrect usernames in polkit rules, or system state conflicts that require a container restart.

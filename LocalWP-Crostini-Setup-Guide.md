@@ -69,7 +69,14 @@ EOF
 
 **Important:** Replace `YOUR_USERNAME` with your actual username. You can find it with:
 ```bash
+# Show your current username
 echo $USER
+
+# Alternative methods:
+whoami
+
+# See all users on the system:
+users
 ```
 
 #### 2.2 Reload Polkit Rules
@@ -90,6 +97,21 @@ pkexec echo "Testing pkexec with polkit rules"
 ```
 
 **⚠️ CRITICAL:** If this doesn't work without a password prompt, do NOT proceed. Double-check your username in the polkit rules and fix this first.
+
+#### 2.4 Restart Crostini Container (IMPORTANT!)
+
+**⚠️ CRITICAL:** Restart your Crostini container after configuring polkit to clear any lingering system state:
+
+```bash
+# Option 1: Shutdown from terminal (then restart from Chrome OS settings)
+sudo shutdown -h now
+
+# Option 2: Use Chrome OS Settings
+# Go to: Settings > Advanced > Developers > Linux development environment
+# Click "Stop" then "Turn on"
+```
+
+**Why this is important:** Restarting the container clears system state that might interfere with LocalWP operation, even with correct polkit configuration.
 
 ### 3. Download LocalWP
 
@@ -227,6 +249,8 @@ EOF
 4. **No Manual Fixes:** You avoid having to manually create configuration files
 
 **Previous Problem:** When polkit wasn't configured first, LocalWP's site creation process would fail partway through due to authentication errors, leaving sites in a partially-created state with missing configuration files.
+
+**Container Restart Benefit:** Restarting the Crostini container after polkit configuration ensures a clean system state, preventing subtle issues that can occur even with correct polkit rules.
 
 ## Troubleshooting
 

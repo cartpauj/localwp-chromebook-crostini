@@ -73,3 +73,24 @@ sudo dpkg -i local-linux.deb
 In LocalWP Preferences, set Router Mode to "localhost".
 
 Your LocalWP sites will now be accessible from Chrome OS browser via `http://localhost:PORT/`
+
+## Updating LocalWP
+
+To update LocalWP to the latest version:
+
+### 1. Download Latest Version
+```bash
+wget -O local-linux.deb "https://cdn.localwp.com/stable/latest/deb"
+```
+
+### 2. Install Update
+```bash
+sudo dpkg -i local-linux.deb
+```
+
+### 3. Clean Up
+```bash
+rm local-linux.deb
+```
+
+The update process will preserve your existing sites and settings. No additional configuration is required after updating.
